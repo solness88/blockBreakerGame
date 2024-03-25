@@ -91,14 +91,22 @@
       drawPaddle();
 
       //draw ball
-      if (x > canvas.width - ballRadius || x < ballRadius) {
+      if (x > canvas.width - ballRadius || x + dx < ballRadius) {
         dx = -dx;
       }
-      if (y + dy > canvas.height - ballRadius || y < ballRadius) {
+
+      //if the ball reaches the bottom, the ball stop moving and 'game over' alert appears
+      if (y + dy < ballRadius) {
         dy = -dy;
+      } else if (y + dy > canvas.height - ballRadius) {
+        if (x > paddleX && x < paddleX + paddleWidth) {
+          dy = -dy
+        } else {
+          alert('Game Over');
+          document.location.reload();
+          clearInterval(interval);
+        }
       }
-      x += dx;
-      y += dy;
 
       //move paddle
       if (rightPressed) {
@@ -106,9 +114,14 @@
       } else if (leftPressed) {
         paddleX = Math.max(paddleX - 7, 0);
       }
+
+      x += dx;
+      y += dy;
+
+
     }
 
-    setInterval(draw, 10);
+    const interval = setInterval(draw, 10);
 
   </script>
 </body>
