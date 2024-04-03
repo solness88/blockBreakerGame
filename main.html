@@ -15,6 +15,13 @@
       display: block;
       margin: 0 auto;
     }
+
+    #bird {
+      position: absolute;
+      top: 64px;
+      left: 64px;
+      width: 20px;
+    }
   </style>
 </head>
 
@@ -58,6 +65,9 @@
     let score = 0;
     let lives = 3;
 
+    //variables for bird
+    var birdImg = document.write('<img id="bird" src="images/bird.png">');
+
     function drawBall() {
       ctx.beginPath();
       ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
@@ -94,6 +104,10 @@
         }
       }
     }
+
+    function drawBird() {
+    }
+
 
     //press and release key
     document.addEventListener('keydown', keyDownHandler, false);
@@ -143,7 +157,7 @@
               x > b.x &&
               x < b.x + brickWidth &&
               y > b.y &&
-              y < b.y + brickHeight
+              y < b.y + brickHeight + ballRadius
             ) {
               dy = -dy;
               b.status = 0;
@@ -151,7 +165,7 @@
               if (score === brickRowCount * brickColumnCount) {
                 alert("YOU WIN, CONGRATULATIONS!");
                 document.location.reload();
-                clearInterval(interval); // Needed for Chrome to end game
+                // clearInterval(interval); // Needed for Chrome to end game
               }
             }
           }
@@ -179,6 +193,7 @@
       collisionDetection()
       drawScore();
       drawLives();
+      drawBird();
 
       //draw ball
       if (x > canvas.width - ballRadius || x + dx < ballRadius) {
@@ -217,10 +232,12 @@
       x += dx;
       y += dy;
 
+      requestAnimationFrame(draw);
 
     }
 
-    const interval = setInterval(draw, 10);
+    // const interval = setInterval(draw, 10);
+    draw();
 
   </script>
 </body>
