@@ -38,8 +38,8 @@
     //variables for drawing ball
     let x = canvas.width / 2;
     let y = canvas.height - 30;
-    let dx = 2;
-    let dy = -2;
+    let dx = 4;
+    let dy = -4;
     const ballRadius = 10;
 
     //paddle variables
@@ -114,7 +114,7 @@
     //press and release key
     document.addEventListener('keydown', keyDownHandler, false);
     document.addEventListener('keyup', keyUpHandler, false);
-    document.addEventListener("mousemove", mouseMoveHandler, false);
+    // document.addEventListener("mousemove", mouseMoveHandler, false);
 
     //when press the right/left key
     function keyDownHandler(e) {
@@ -134,12 +134,12 @@
       }
     }
 
-    function mouseMoveHandler(e) {
-      const relativeX = e.clientX - canvas.offsetLeft;
-      if (relativeX > 0 && relativeX < canvas.width) {
-        paddleX = relativeX - paddleWidth / 2;
-      }
-    }
+    // function mouseMoveHandler(e) {
+    //   const relativeX = e.clientX - canvas.offsetLeft;
+    //   if (relativeX > 0 && relativeX < canvas.width) {
+    //     paddleX = relativeX - paddleWidth / 2;
+    //   }
+    // }
 
     //draw paddle here
     function drawPaddle() {
@@ -190,9 +190,11 @@
     function gameResume() {
       x = canvas.width / 2;
       y = canvas.height - 30;
-      dx = 2;
-      dy = -2;
+      dx = 4;
+      dy = -4;
       paddleX = (canvas.width - paddleWidth) / 2;
+      rightPressed = false;
+      leftPressed = false;
     }
 
     function draw() {
@@ -227,7 +229,7 @@
         }
       }
 
-      //if the paddle touches the ceil, the ball turn upwards
+      //if the ball touches the paddle, the ball turn upwards
       else if (y + dy > canvas.height - ballRadius - paddleHeight) {
         if (x > paddleX && x < paddleX + paddleWidth) {
           dy = -dy
