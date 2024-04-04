@@ -15,20 +15,13 @@
       display: block;
       margin: 0 auto;
     }
-
-    #bird {
-      position: absolute;
-      top: 64px;
-      left: 64px;
-      width: 20px;
-    }
   </style>
 </head>
 
 <body>
   <!-- canvas element -->
   <canvas id="myCanvas" width="480" height="320"></canvas>
-
+  <img src="images/bird.png" id="bird">
   <!-- JavaScript from here -->
   <script>
     //draw canvas
@@ -69,7 +62,12 @@
     let lives = 3;
 
     //variables for bird
-    var birdImg = document.write('<img id="bird" src="images/bird.png">');
+    var birdImg = document.getElementById('bird');
+    birdImg.style.position = 'absolute';
+    birdImg.style.top = '170px';
+    birdImg.style.left = '500px';
+    birdImg.style.width = '50px';
+    var birdX = 1
 
     //variables for sounds
     const touchWall = new Audio('sounds/touchWall.mp3');
@@ -114,12 +112,22 @@
     }
 
     function drawBird() {
+      // birdImg.style.left = (parseInt(birdImg.style.left) + birdX) + 'px';
+      // if (birdImg.style.left > 900 || birdImg.style.left < 500) {
+      //   birdX = -birdX;
+      //   console.log("こんにちは")
+      // }
+      var leftValue = parseInt(birdImg.style.left); // leftの値を整数に変換
+      birdImg.style.left = (leftValue + birdX) + 'px'; // leftにピクセル単位を付与して設定
+      if (leftValue + birdX > 900 || leftValue + birdX < 500) { // 数値として比較
+        birdX = -birdX; // birdXの符号を反転
+      }
     }
+
 
     //press and release key
     document.addEventListener('keydown', keyDownHandler, false);
     document.addEventListener('keyup', keyUpHandler, false);
-    // document.addEventListener("mousemove", mouseMoveHandler, false);
 
     //when press the right/left key
     function keyDownHandler(e) {
@@ -138,13 +146,6 @@
         leftPressed = false;
       }
     }
-
-    // function mouseMoveHandler(e) {
-    //   const relativeX = e.clientX - canvas.offsetLeft;
-    //   if (relativeX > 0 && relativeX < canvas.width) {
-    //     paddleX = relativeX - paddleWidth / 2;
-    //   }
-    // }
 
     //draw paddle here
     function drawPaddle() {
