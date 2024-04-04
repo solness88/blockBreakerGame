@@ -71,6 +71,11 @@
     //variables for bird
     var birdImg = document.write('<img id="bird" src="images/bird.png">');
 
+    //variables for sounds
+    const touchWall = new Audio('sounds/touchWall.mp3');
+    const touchPaddle = new Audio('sounds/touchPaddle.mp3');
+    const touchBlock = new Audio('sounds/touchBlock.mp3');
+
     function drawBall() {
       ctx.beginPath();
       ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
@@ -161,6 +166,12 @@
               y > b.y &&
               y < b.y + brickHeight + ballRadius
             ) {
+              touchBlock.load();
+              touchBlock.play(); // 効果音を再生する
+
+
+
+
               dy = -dy;
               b.status = 0;
               score++;
@@ -211,11 +222,15 @@
       //draw ball
       if (x > canvas.width - ballRadius || x + dx < ballRadius) {
         dx = -dx;
+        touchWall.load();
+        touchWall.play();
       }
 
       //if the paddle touches the ceil, the ball turn downwards
       if (y + dy < ballRadius) {
         dy = -dy;
+        touchWall.load();
+        touchWall.play();
 
         //if the ball reaches the bottom, the ball stop moving and alert appears      
       } else if (y + dy > canvas.height - ballRadius) {
@@ -232,6 +247,7 @@
 
       //if the ball touches the paddle, the ball turn upwards
       else if (y + dy > canvas.height - ballRadius - paddleHeight) {
+        touchPaddle.play();
         if (x > paddleX && x < paddleX + paddleWidth) {
           dy = -dy
         }
