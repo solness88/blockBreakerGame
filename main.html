@@ -11,7 +11,13 @@
     }
 
     canvas {
-      background: #eee;
+      /*background: #eee;*/
+      background-image: url('images/beach.jpg');
+      /* 画像のURLを指定 */
+      background-size: cover;
+      /* 画像をキャンバス全体に広げる */
+      background-position: center;
+      /* 画像を中央に配置する */
       display: block;
       margin: 0 auto;
     }
@@ -22,6 +28,7 @@
   <!-- canvas element -->
   <canvas id="myCanvas" width="600" height="400"></canvas>
   <img src="images/bird.png" id="bird">
+
   <!-- JavaScript from here -->
   <script>
     //draw canvas
@@ -50,8 +57,8 @@
     let gamePlay = false;
 
     //variables for block
-    const brickRowCount = 3;
-    const brickColumnCount = 5;
+    const brickRowCount = 4;
+    const brickColumnCount = 6;
     const brickWidth = 75;
     const brickHeight = 20;
     const brickPadding = 10;
@@ -80,7 +87,8 @@
     function drawBall() {
       ctx.beginPath();
       ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-      ctx.fillStyle = "#0095DD";
+      // ctx.fillStyle = "#0095DD";
+      ctx.fillStyle = "rgb(224, 18, 162)";
       ctx.fill();
       ctx.closePath();
     }
@@ -106,7 +114,8 @@
             bricks[c][r].y = brickY;
             ctx.beginPath();
             ctx.rect(brickX, brickY, brickWidth, brickHeight);
-            ctx.fillStyle = "#0095DD";
+            // ctx.fillStyle = "#0095DD";
+            ctx.fillStyle = "rgb(224, 18, 162)";
             ctx.fill();
             ctx.closePath();
           }
@@ -156,7 +165,8 @@
     function drawPaddle() {
       ctx.beginPath();
       ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
-      ctx.fillStyle = "#0095DD";
+      // ctx.fillStyle = "#0095DD";
+      ctx.fillStyle = "rgb(224, 18, 162)";
       ctx.fill();
       ctx.closePath();
     }
@@ -179,8 +189,10 @@
               score++;
               if (score === brickRowCount * brickColumnCount) {
                 b.status = 0;
-                alert("YOU WIN, CONGRATULATIONS!");
-                document.location.reload();
+                setTimeout(function () {
+                  alert("YOU WIN, CONGRATULATIONS!");
+                  document.location.reload();
+                }, 30); // 500ミリ秒（0.5秒）後にリロード
               }
             }
           }
