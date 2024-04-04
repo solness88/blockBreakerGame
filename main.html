@@ -161,17 +161,13 @@
           const b = bricks[c][r];
           if (b.status === 1) {
             if (
-              x > b.x &&
-              x < b.x + brickWidth &&
-              y > b.y &&
+              x > b.x - ballRadius &&
+              x < b.x + brickWidth + ballRadius &&
+              y > b.y - ballRadius &&
               y < b.y + brickHeight + ballRadius
             ) {
               touchBlock.load();
-              touchBlock.play(); // 効果音を再生する
-
-
-
-
+              touchBlock.play();
               dy = -dy;
               b.status = 0;
               score++;
@@ -219,7 +215,7 @@
       drawLives();
       drawBird();
 
-      //draw ball
+      //when the ball touch the left and right walls
       if (x > canvas.width - ballRadius || x + dx < ballRadius) {
         dx = -dx;
         touchWall.load();
@@ -233,7 +229,7 @@
         touchWall.play();
 
         //if the ball reaches the bottom, the ball stop moving and alert appears      
-      } else if (y + dy > canvas.height - ballRadius) {
+      } else if (y + dy > canvas.height) {
         lives--;
         if (!lives) {
           alert("GAME OVER");
