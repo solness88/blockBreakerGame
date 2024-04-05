@@ -168,7 +168,6 @@
     function drawPaddle() {
       ctx.beginPath();
       ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
-      // ctx.fillStyle = "#0095DD";
       ctx.fillStyle = "rgb(224, 18, 162)";
       ctx.fill();
       ctx.closePath();
@@ -212,8 +211,8 @@
         bird.flying = false
         touchBird.load();
         touchBird.play();
-        birdPositionX = 0;
-        birdPositionY = 0;
+        birdPositionX = -300;
+        birdPositionY = -300;
       }
     }
 
