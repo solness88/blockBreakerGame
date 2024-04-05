@@ -27,7 +27,6 @@
 <body>
   <!-- canvas element -->
   <canvas id="myCanvas" width="600" height="400"></canvas>
-  <img src="images/bird.png" id="bird">
 
   <!-- JavaScript from here -->
   <script>
@@ -36,10 +35,10 @@
     var ctx = canvas.getContext("2d");
 
     //variables for drawing ball
-    let x = canvas.width / 2;
-    let y = canvas.height - 30;
-    let dx = 4;
-    let dy = -4;
+    var x = canvas.width / 2;
+    var y = canvas.height - 30;
+    var dx = 4;
+    var dy = -4;
     const ballRadius = 10;
 
     //paddle variables
@@ -68,16 +67,37 @@
     let score = 0;
     let lives = 3;
 
-    //variables for bird
-    var birdImg = document.getElementById('bird');
-    birdImg.style.position = 'absolute';
-    birdImg.style.top = '300px';
-    birdImg.style.right = 0;
-    birdImg.style.left = 0;
-    birdImg.style.margin = '0 auto';
-    birdImg.style.width = '50px';
-    var birdX = 2;
-    var birdY = 1;
+    var bird = {
+      x: 1,
+      y: 0.5,
+      width: 50,
+      height: 50,
+      flying: true
+    }
+
+    var birdPositionX = canvas.width / 2;
+    var birdPositionY = canvas.height / 2;
+    var birdImg = new Image();
+    birdImg.src = "./images/bird.png";
+
+    function drawBird() {
+      if (bird.flying) {
+        // birdImgをcanvas上に描画する
+        ctx.drawImage(birdImg, birdPositionX, birdPositionY, bird.width, bird.height);
+
+        //birdImgがcanvasの幅を超えた場合、x方向の移動方向を反転させる
+        if (birdPositionX + bird.width > canvas.width || birdPositionX + bird.x < 0) {
+          bird.x = -bird.x;
+        }
+
+        if (birdPositionY > (canvas.height / 2) + 10 || birdPositionY < (canvas.height / 2) - 10) {
+          bird.y = -bird.y;
+        }
+
+        birdPositionX += bird.x;
+        birdPositionY += bird.y;
+      }
+    }
 
     //variables for sounds
     const touchWall = new Audio('sounds/touchWall.mp3');
@@ -87,7 +107,6 @@
     function drawBall() {
       ctx.beginPath();
       ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-      // ctx.fillStyle = "#0095DD";
       ctx.fillStyle = "rgb(224, 18, 162)";
       ctx.fill();
       ctx.closePath();
@@ -114,30 +133,14 @@
             bricks[c][r].y = brickY;
             ctx.beginPath();
             ctx.rect(brickX, brickY, brickWidth, brickHeight);
-            // ctx.fillStyle = "#0095DD";
             ctx.fillStyle = "rgb(224, 18, 162)";
             ctx.fill();
             ctx.closePath();
+
           }
         }
       }
     }
-
-    function drawBird() {
-      var leftValue = parseInt(birdImg.style.left); // leftの値を整数に変換
-      var topValue = parseInt(birdImg.style.top);
-
-      birdImg.style.left = (leftValue + birdX) + 'px'; // leftにピクセル単位を付与して設定
-      if (leftValue + birdX > 300 || leftValue + birdX < -300) { // 数値として比較
-        birdX = -birdX; // birdXの符号を反転
-      }
-
-      birdImg.style.top = (topValue + birdY) + 'px';
-      if (topValue + birdY > 310 || topValue + birdY < 290) { // 数値として比較
-        birdY = -birdY; // birdXの符号を反転
-      }
-    }
-
 
     //press and release key
     document.addEventListener('keydown', keyDownHandler, false);
@@ -200,6 +203,19 @@
       }
     }
 
+    function birdCollisionDetection(birdPositionX, birdPositionY, x, y) {
+      // if (Math.sqrt(Math.pow(x - (birdPositionX + 50), 2) + Math.pow(y - (birdPositionY + 50), 2)) < 15) {
+      if (x + ballRadius > birdPositionX &&
+        x - ballRadius < birdPositionX + bird.width &&
+        y - ballRadius > birdPositionY &&
+        y + ballRadius < birdPositionY + bird.height) {
+        dy = -dy;
+        bird.flying = false
+        birdPositionX = 0;
+        birdPositionY = 0;
+      }
+    }
+
     function drawScore() {
       ctx.font = "16px Arial";
       ctx.fillStyle = "#0095DD";
@@ -227,10 +243,12 @@
       drawBricks();
       drawBall();
       drawPaddle();
-      collisionDetection()
+      collisionDetection();
       drawScore();
       drawLives();
+      birdCollisionDetection(birdPositionX, birdPositionY, x, y)
       drawBird();
+
 
       //when the ball touch the left and right walls
       if (x > canvas.width - ballRadius || x + dx < ballRadius) {
