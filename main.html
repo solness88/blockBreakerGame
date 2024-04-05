@@ -103,6 +103,7 @@
     const touchWall = new Audio('sounds/touchWall.mp3');
     const touchPaddle = new Audio('sounds/touchPaddle.mp3');
     const touchBlock = new Audio('sounds/touchBlock.mp3');
+    const touchBird = new Audio('sounds/bird.mp3');
 
     function drawBall() {
       ctx.beginPath();
@@ -136,7 +137,6 @@
             ctx.fillStyle = "rgb(224, 18, 162)";
             ctx.fill();
             ctx.closePath();
-
           }
         }
       }
@@ -204,13 +204,14 @@
     }
 
     function birdCollisionDetection(birdPositionX, birdPositionY, x, y) {
-      // if (Math.sqrt(Math.pow(x - (birdPositionX + 50), 2) + Math.pow(y - (birdPositionY + 50), 2)) < 15) {
       if (x + ballRadius > birdPositionX &&
         x - ballRadius < birdPositionX + bird.width &&
         y - ballRadius > birdPositionY &&
         y + ballRadius < birdPositionY + bird.height) {
         dy = -dy;
         bird.flying = false
+        touchBird.load();
+        touchBird.play();
         birdPositionX = 0;
         birdPositionY = 0;
       }
@@ -239,6 +240,7 @@
     }
 
     function draw() {
+      console.log(birdPositionX)
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawBricks();
       drawBall();
