@@ -235,7 +235,6 @@
     }
 
     function draw() {
-      console.log(birdPositionX)
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawBricks();
       drawBall();
@@ -277,10 +276,19 @@
       else if (y + dy > canvas.height - ballRadius - paddleHeight) {
         touchPaddle.play();
         if (x > paddleX && x < paddleX + paddleWidth) {
-          dy = -dy
+          dy = -dy;
+
+          if (dy == 2 || dy == -2) {
+            dy = -4;
+            dx = 4;
+          }
         }
+
         if ((dx < 0 && rightPressed) || (dx > 0 && leftPressed)) {
           dx = -dx
+        } else if ((dx < 0 && leftPressed) || (dx > 0 && rightPressed)) {
+          dy = -2;
+          dx = -5.29
         }
       }
 
@@ -295,7 +303,8 @@
       y += dy;
 
       requestAnimationFrame(draw);
-
+      console.log("dy: " + dy)
+      console.log("dx: " + dx)
     }
 
     // const interval = setInterval(draw, 10);
