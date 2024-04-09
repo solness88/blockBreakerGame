@@ -75,6 +75,7 @@
     var birdPositionY = canvas.height / 2;
     var birdImg = new Image();
     birdImg.src = "./images/bird.png";
+    tokiImg = "./images/toki.png";
 
     function drawBird() {
       if (bird.flying) {
@@ -282,9 +283,9 @@
           if (dy == 2 || dy == -2) {
             dy = -4;
             if (dx > 0) {
-              dx = 4
+              dx = 4;
             } else {
-              dx = -4
+              dx = -4;
             }
           }
         }
