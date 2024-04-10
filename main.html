@@ -63,7 +63,7 @@
     let score = 0;
     let lives = 3;
 
-    var bird = {
+    var crow = {
       x: 1,
       y: 0.5,
       width: 50,
@@ -71,28 +71,28 @@
       flying: true
     }
 
-    var birdPositionX = canvas.width / 2;
-    var birdPositionY = canvas.height / 2;
-    var birdImg = new Image();
-    birdImg.src = "./images/bird.png";
+    var crowPositionX = canvas.width / 2;
+    var crowPositionY = canvas.height / 2;
+    var crowImg = new Image();
+    crowImg.src = "./images/crow.png";
     tokiImg = "./images/toki.png";
 
-    function drawBird() {
-      if (bird.flying) {
-        // birdImgをcanvas上に描画する
-        ctx.drawImage(birdImg, birdPositionX, birdPositionY, bird.width, bird.height);
+    function drawCrow() {
+      if (crow.flying) {
+        // crowImgをcanvas上に描画する
+        ctx.drawImage(crowImg, crowPositionX, crowPositionY, crow.width, crow.height);
 
-        //birdImgがcanvasの幅を超えた場合、x方向の移動方向を反転させる
-        if (birdPositionX + bird.width > canvas.width || birdPositionX + bird.x < 0) {
-          bird.x = -bird.x;
+        //crowImgがcanvasの幅を超えた場合、x方向の移動方向を反転させる
+        if (crowPositionX + crow.width > canvas.width || crowPositionX + crow.x < 0) {
+          crow.x = -crow.x;
         }
 
-        if (birdPositionY > (canvas.height / 2) + 10 || birdPositionY < (canvas.height / 2) - 10) {
-          bird.y = -bird.y;
+        if (crowPositionY > (canvas.height / 2) + 10 || crowPositionY < (canvas.height / 2) - 10) {
+          crow.y = -crow.y;
         }
 
-        birdPositionX += bird.x;
-        birdPositionY += bird.y;
+        crowPositionX += crow.x;
+        crowPositionY += crow.y;
       }
     }
 
@@ -100,7 +100,7 @@
     const touchWall = new Audio('sounds/touchWall.mp3');
     const touchPaddle = new Audio('sounds/touchPaddle.mp3');
     const touchBlock = new Audio('sounds/touchBlock.mp3');
-    const touchBird = new Audio('sounds/bird.mp3');
+    const touchCrow = new Audio('sounds/crow.mp3');
 
     function drawBall() {
       ctx.beginPath();
@@ -199,17 +199,17 @@
       }
     }
 
-    function birdCollisionDetection(birdX, birdY, x, y) {
-      if (x + ballRadius > birdX &&
-        x - ballRadius < birdX + bird.width &&
-        y - ballRadius > birdY &&
-        y + ballRadius < birdY + bird.height) {
+    function crowCollisionDetection(crowX, crowY, x, y) {
+      if (x + ballRadius > crowX &&
+        x - ballRadius < crowX + crow.width &&
+        y - ballRadius > crowY &&
+        y + ballRadius < crowY + crow.height) {
         dy = -dy;
-        bird.flying = false
-        touchBird.load();
-        touchBird.play();
-        birdPositionX = -300;
-        birdPositionY = -300;
+        crow.flying = false
+        touchCrow.load();
+        touchCrow.play();
+        crowPositionX = -300;
+        crowPositionY = -300;
       }
     }
 
@@ -244,9 +244,9 @@
       collisionDetection();
       drawScore();
       drawLives();
-      birdCollisionDetection(birdPositionX, birdPositionY, x, y);
+      crowCollisionDetection(crowPositionX, crowPositionY, x, y);
 
-      drawBird();
+      drawCrow();
 
       //when the ball touch the left and right walls
       if (x > canvas.width - ballRadius || x + dx < ballRadius) {
