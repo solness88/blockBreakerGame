@@ -63,38 +63,68 @@
     let score = 0;
     let lives = 3;
 
-    var crow = {
-      x: 1,
-      y: 0.5,
-      width: 50,
-      height: 50,
-      flying: true
-    }
-
-    var crowPositionX = canvas.width / 2;
-    var crowPositionY = canvas.height / 2;
     var crowImg = new Image();
     crowImg.src = "./images/crow.png";
-    tokiImg = "./images/toki.png";
 
+    var tokiImg = new Image();
+    tokiImg.src = "./images/toki.png";
+
+    function Bird(x, y, width, height, positionX, positionY, flying) {
+      this.x = x;
+      this.y = y;
+      this.width = width;
+      this.height = height;
+      this.positionX = positionX;
+      this.positionY = positionY;
+      this.flying = flying;
+    }
+
+    //create new instance of crow
+    var crow = new Bird(1, 0.5, 50, 50, canvas.width / 2, canvas.height / 2, true)
+
+    //create new instance of crow
+    var toki = new Bird(-1, -0.5, 50, 50, canvas.width / 2, canvas.height / 2, true)
+
+    //draw craw
     function drawCrow() {
       if (crow.flying) {
         // crowImgをcanvas上に描画する
-        ctx.drawImage(crowImg, crowPositionX, crowPositionY, crow.width, crow.height);
+        ctx.drawImage(crowImg, crow.positionX, crow.positionY, crow.width, crow.height);
 
         //crowImgがcanvasの幅を超えた場合、x方向の移動方向を反転させる
-        if (crowPositionX + crow.width > canvas.width || crowPositionX + crow.x < 0) {
+        if (crow.positionX + crow.width > canvas.width || crow.positionX + crow.x < 0) {
           crow.x = -crow.x;
         }
 
-        if (crowPositionY > (canvas.height / 2) + 10 || crowPositionY < (canvas.height / 2) - 10) {
+        if (crow.positionY > (canvas.height / 2) + 10 || crow.positionY < (canvas.height / 2) - 10) {
           crow.y = -crow.y;
         }
 
-        crowPositionX += crow.x;
-        crowPositionY += crow.y;
+        crow.positionX += crow.x;
+        crow.positionY += crow.y;
       }
     }
+
+    //draw craw
+    function drawToki() {
+      if (toki.flying) {
+        // crowImgをcanvas上に描画する
+        ctx.drawImage(tokiImg, toki.positionX, toki.positionY, toki.width, toki.height);
+
+        //crowImgがcanvasの幅を超えた場合、x方向の移動方向を反転させる
+        if (toki.positionX + toki.width > canvas.width || toki.positionX + toki.x < 0) {
+          toki.x = -toki.x;
+        }
+
+        if (toki.positionY > (canvas.height / 2) + 10 || toki.positionY < (canvas.height / 2) - 10) {
+          toki.y = -toki.y;
+        }
+
+        toki.positionX += toki.x;
+        toki.positionY += toki.y;
+      }
+    }
+
 
     //variables for sounds
     const touchWall = new Audio('sounds/touchWall.mp3');
@@ -208,8 +238,22 @@
         crow.flying = false
         touchCrow.load();
         touchCrow.play();
-        crowPositionX = -300;
-        crowPositionY = -300;
+        crow.positionX = -300;
+        crow.positionY = -300;
+      }
+    }
+
+    function tokiCollisionDetection(tokiX, tokiY, x, y) {
+      if (x + ballRadius > tokiX &&
+        x - ballRadius < tokiX + toki.width &&
+        y - ballRadius > tokiY &&
+        y + ballRadius < tokiY + toki.height) {
+        dy = -dy;
+        toki.flying = false
+        touchCrow.load();
+        touchCrow.play();
+        toki.positionX = -300;
+        toki.positionY = -300;
       }
     }
 
@@ -244,10 +288,11 @@
       collisionDetection();
       drawScore();
       drawLives();
-      crowCollisionDetection(crowPositionX, crowPositionY, x, y);
+      crowCollisionDetection(crow.positionX, crow.positionY, x, y);
+      tokiCollisionDetection(toki.positionX, toki.positionY, x, y);
 
       drawCrow();
-
+      drawToki();
       //when the ball touch the left and right walls
       if (x > canvas.width - ballRadius || x + dx < ballRadius) {
         dx = -dx;
