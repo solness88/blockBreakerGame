@@ -131,6 +131,7 @@
     const touchPaddle = new Audio('sounds/touchPaddle.mp3');
     const touchBlock = new Audio('sounds/touchBlock.mp3');
     const touchCrow = new Audio('sounds/crow.mp3');
+    const touchToki = new Audio('sounds/toki.mp3');
 
     function drawBall() {
       ctx.beginPath();
@@ -250,8 +251,8 @@
         y + ballRadius < tokiY + toki.height) {
         dy = -dy;
         toki.flying = false
-        touchCrow.load();
-        touchCrow.play();
+        touchToki.load();
+        touchToki.play();
         toki.positionX = -300;
         toki.positionY = -300;
       }
