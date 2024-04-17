@@ -323,7 +323,16 @@
       //if the ball touches the paddle, the ball turn upwards
       else if (y + dy > canvas.height - ballRadius - paddleHeight) {
         touchPaddle.play();
-        if (x > paddleX && x < paddleX + paddleWidth) {
+
+        if (x > paddleX && x < paddleX + 10) {
+          dy = -2.16;
+          dx = -5.34;
+        } else if (x < paddleX + paddleWidth && x > paddleX + paddleWidth - 10) {
+          dy = -2.16;
+          dx = 5.34;
+        }
+
+        if (x > paddleX + 10 && x < paddleX + paddleWidth - 10) {
           dy = -dy;
 
           if (dy == 2 || dy == -2) {
