@@ -69,6 +69,9 @@
     var tokiImg = new Image();
     tokiImg.src = "./images/toki.png";
 
+    var swallowImg = new Image();
+    swallowImg.src = "./images/swallow.png";
+
     function Bird(x, y, width, height, positionX, positionY, flying) {
       this.x = x;
       this.y = y;
@@ -82,8 +85,11 @@
     //create new instance of crow
     var crow = new Bird(1, 0.5, 50, 50, canvas.width / 2, canvas.height / 2, true)
 
-    //create new instance of crow
+    //create new instance of toki
     var toki = new Bird(-1, -0.5, 50, 50, canvas.width / 2, canvas.height / 2, true)
+
+    //create new instance of swallow
+    var swallow = new Bird(-1.5, -0.5, 50, 50, canvas.width / 2 - 70, canvas.height / 2, true)
 
     //draw craw
     function drawCrow() {
@@ -105,7 +111,7 @@
       }
     }
 
-    //draw craw
+    //draw toki
     function drawToki() {
       if (toki.flying) {
         // crowImgをcanvas上に描画する
@@ -122,6 +128,26 @@
 
         toki.positionX += toki.x;
         toki.positionY += toki.y;
+      }
+    }
+
+    //draw swallow
+    function drawSwallow() {
+      if (swallow.flying) {
+        // crowImgをcanvas上に描画する
+        ctx.drawImage(swallowImg, swallow.positionX, swallow.positionY, swallow.width, swallow.height);
+
+        //crowImgがcanvasの幅を超えた場合、x方向の移動方向を反転させる
+        if (swallow.positionX + swallow.width > canvas.width || swallow.positionX + swallow.x < 0) {
+          swallow.x = -swallow.x;
+        }
+
+        if (swallow.positionY > (canvas.height / 2) + 10 || swallow.positionY < (canvas.height / 2) - 10) {
+          swallow.y = -swallow.y;
+        }
+
+        swallow.positionX += swallow.x;
+        swallow.positionY += swallow.y;
       }
     }
 
@@ -294,6 +320,8 @@
 
       drawCrow();
       drawToki();
+      drawSwallow();
+
       //when the ball touch the left and right walls
       if (x > canvas.width - ballRadius || x + dx < ballRadius) {
         dx = -dx;
