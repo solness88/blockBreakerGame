@@ -72,7 +72,10 @@
     var swallowImg = new Image();
     swallowImg.src = "./images/swallow.png";
 
-    function Bird(x, y, width, height, positionX, positionY, flying) {
+    var planeImg = new Image();
+    planeImg.src = "./images/plane.png";
+
+    function flyingObject(x, y, width, height, positionX, positionY, flying) {
       this.x = x;
       this.y = y;
       this.width = width;
@@ -83,13 +86,15 @@
     }
 
     //create new instance of crow
-    var crow = new Bird(1, 0.5, 50, 50, canvas.width / 2, canvas.height / 2, true)
+    var crow = new flyingObject(1, 0.5, 50, 50, canvas.width / 2, canvas.height / 2, true)
 
     //create new instance of toki
-    var toki = new Bird(-1, -0.5, 50, 50, canvas.width / 2, canvas.height / 2, true)
+    var toki = new flyingObject(-1, -0.5, 50, 50, canvas.width / 2, canvas.height / 2, true)
 
     //create new instance of swallow
-    var swallow = new Bird(-1.5, -0.5, 50, 50, canvas.width / 2 - 70, canvas.height / 2, true)
+    var swallow = new flyingObject(-1.5, -0.5, 50, 50, canvas.width / 2 - 70, canvas.height / 2 + 50, true)
+
+    var plane = new flyingObject(-1.5, -0.5, 50, 50, canvas.width / 2 - 70, canvas.height / 2 - 50, true)
 
     //draw craw
     function drawCrow() {
@@ -151,6 +156,25 @@
       }
     }
 
+    //draw plane
+    function drawPlane() {
+      if (plane.flying) {
+        // crowImgをcanvas上に描画する
+        ctx.drawImage(planeImg, plane.positionX, plane.positionY, plane.width, plane.height);
+
+        //crowImgがcanvasの幅を超えた場合、x方向の移動方向を反転させる
+        if (plane.positionX + plane.width > canvas.width || plane.positionX + plane.x < 0) {
+          plane.x = -plane.x;
+        }
+
+        if (plane.positionY > (canvas.height / 2) + 10 || plane.positionY < (canvas.height / 2) - 10) {
+          plane.y = -plane.y;
+        }
+
+        plane.positionX += plane.x;
+        plane.positionY += plane.y;
+      }
+    }
 
     //variables for sounds
     const touchWall = new Audio('sounds/touchWall.mp3');
@@ -321,6 +345,8 @@
       drawCrow();
       drawToki();
       drawSwallow();
+      drawPlane();
+
 
       //when the ball touch the left and right walls
       if (x > canvas.width - ballRadius || x + dx < ballRadius) {
