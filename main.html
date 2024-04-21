@@ -147,7 +147,7 @@
           swallow.x = -swallow.x;
         }
 
-        if (swallow.positionY > (canvas.height / 2) + 10 || swallow.positionY < (canvas.height / 2) - 10) {
+        if (swallow.positionY > (canvas.height / 2) + 60 || swallow.positionY < (canvas.height / 2) - 10) {
           swallow.y = -swallow.y;
         }
 
@@ -167,7 +167,7 @@
           plane.x = -plane.x;
         }
 
-        if (plane.positionY > (canvas.height / 2) + 10 || plane.positionY < (canvas.height / 2) - 10) {
+        if (plane.positionY > (canvas.height / 2) + 20 || plane.positionY < (canvas.height / 2) - 70) {
           plane.y = -plane.y;
         }
 
@@ -308,6 +308,40 @@
       }
     }
 
+
+    function swallowCollisionDetection(swallowX, swallowY, x, y) {
+      if (x + ballRadius > swallowX &&
+        x - ballRadius < swallowX + swallow.width &&
+        y - ballRadius > swallowY &&
+        y + ballRadius < swallowY + swallow.height) {
+        dy = -dy;
+        swallow.flying = false
+        touchToki.load();
+        touchToki.play();
+        swallow.positionX = -300;
+        swallow.positionY = -300;
+      }
+    }
+
+
+    function planeCollisionDetection(planeX, planeY, x, y) {
+      if (x + ballRadius > planeX &&
+        x - ballRadius < planeX + plane.width &&
+        y - ballRadius > planeY &&
+        y + ballRadius < planeY + plane.height) {
+        dy = -dy;
+        plane.flying = false
+        touchToki.load();
+        touchToki.play();
+        plane.positionX = -300;
+        plane.positionY = -300;
+      }
+    }
+
+
+
+
+
     function drawScore() {
       ctx.font = "16px Arial";
       ctx.fillStyle = "#0095DD";
@@ -341,6 +375,8 @@
       drawLives();
       crowCollisionDetection(crow.positionX, crow.positionY, x, y);
       tokiCollisionDetection(toki.positionX, toki.positionY, x, y);
+      swallowCollisionDetection(swallow.positionX, swallow.positionY, x, y);
+      planeCollisionDetection(plane.positionX, plane.positionY, x, y);
 
       drawCrow();
       drawToki();
